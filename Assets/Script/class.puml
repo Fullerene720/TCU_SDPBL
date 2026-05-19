@@ -1,0 +1,53 @@
+@startuml SDPBL
+
+namespace Manager{
+    class GameManager {
+        +Title
+        +Begin
+        +Start
+        +Prepare
+        +Playing
+        +End
+    }
+
+    class PlayerManager {
+        +Move()
+    }
+    class AnomalyManager{
+
+    }
+
+
+    class StageManager{
+        +changeStage()
+    }
+
+    class UIManager{
+
+    }
+}
+GameManager -- PlayerManager
+GameManager -- StageManager
+StageManager -- AnomalyManager
+
+namespace Player{
+    class PlayerTracker{
+
+    }
+}
+
+namespace Anomaly{
+    class AnomalyData{
+
+    }
+    class AnomalySelector{
+        +Select()
+        +Delate()
+    }
+}
+AnomalySelector -- AnomalyManager
+AnomalyData "16" --o "1" AnomalySelector : contains 
+AnomalySelector -- PlayerTracker
+
+
+@enduml

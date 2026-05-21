@@ -12,25 +12,25 @@ namespace StarterAssets
 	public class FirstPersonController : MonoBehaviour
 	{
 		[Header("Player")]
-		[Tooltip("Move speed of the character in m/s")]
+		[Tooltip("歩く速さ m/s")]
 		public float MoveSpeed = 4.0f;
-		[Tooltip("Sprint speed of the character in m/s")]
+		[Tooltip("走る速さ m/s")]
 		public float SprintSpeed = 6.0f;
-		[Tooltip("Rotation speed of the character")]
+		[Tooltip("回転のスピード")]
 		public float RotationSpeed = 1.0f;
-		[Tooltip("Acceleration and deceleration")]
+		[Tooltip("加速と減速の程度")]
 		public float SpeedChangeRate = 10.0f;
 
 		[Space(10)]
-		[Tooltip("The height the player can jump")]
+		[Tooltip("ジャンプの高さ")]
 		public float JumpHeight = 1.2f;
 		[Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
 		public float Gravity = -15.0f;
 
 		[Space(10)]
-		[Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
+		[Tooltip("再びジャンプできるようになるまでの待機時間。0fに設定すると、即座に再びジャンプできます。")]
 		public float JumpTimeout = 0.1f;
-		[Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
+		[Tooltip("落下状態に移行するまでにかかる時間。階段を降りる際などに有用です。")]
 		public float FallTimeout = 0.15f;
 
 		[Header("Player Grounded")]
@@ -74,6 +74,9 @@ namespace StarterAssets
 
 		private const float _threshold = 0.01f;
 
+		[Header("追加項目")]
+		public bool canMove = true;
+
 		private bool IsCurrentDeviceMouse
 		{
 			get
@@ -114,7 +117,10 @@ namespace StarterAssets
 		{
 			JumpAndGravity();
 			GroundedCheck();
-			Move();
+			if (canMove)
+			{
+                Move();
+            }
 		}
 
 		private void LateUpdate()
@@ -153,8 +159,8 @@ namespace StarterAssets
 
 		private void Move()
 		{
-			// set target speed based on move speed, sprint speed and if sprint is pressed
-			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            // 移動速度、走る速度、走るボタンが押されているかどうかに基づいて目標速度を設定する
+            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 

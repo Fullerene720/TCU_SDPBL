@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mono.Cecil;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -8,29 +9,43 @@ public class AnomalyManager : MonoBehaviour
     public AnomalySelector selector;
 
     public bool currentIsAnomaly = false;
+    private Vector3 currentPosition;
+    private Vector3 currentRotation;
 
 
     public PlayerTracker tracker;
 
-    
-    public void GenerateAnomaly()//生成異変選択
+
+    private void Start()
+    {
+        currentPosition = new Vector3(0,0,0);
+        currentRotation = new Vector3(0,0,0);
+    }
+
+
+    public void GenerateAnomaly(Vector3 position)//生成異変選択
     {
         AnomalyData selected = selector.Select();
-        Spawn(selected);
+        Spawn(selected,position);
     }
 
     
-    public void DelateAnomary()//削除異変選択
+    public void DelateAnomaly()//削除異変選択
     {
         AnomalyData delated = selector.Delate();
         delate(delated);
     }
 
     
-    void Spawn(AnomalyData data)//異変生成
+    void Spawn(AnomalyData data ,Vector3 position)//異変生成
     {
         data.gameObject.SetActive(true);
-        if(data.isAnomaly== true){ currentIsAnomaly=true; }
+        data.transform.position = currentPosition + position;
+        data.transform.eulerAngles = currentRotation + new Vector3(0, 180, 0);
+        currentPosition = data.transform.position;
+        currentRotation = data.transform.eulerAngles;
+
+        if (data.isAnomaly== true){ currentIsAnomaly=true; }
         else { currentIsAnomaly=false; }
     }
 

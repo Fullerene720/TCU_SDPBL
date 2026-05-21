@@ -8,6 +8,11 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject HallWay;
     [SerializeField] public int ClassCount = 0;
 
+    //事前に設定が必要
+    [SerializeField] private Vector3 hallwayRelativePos;//今いる教室に対しての廊下の相対座標
+    [SerializeField] private Vector3 frontClassRelativePos;//今いる教室に対しての前からの教室座標
+    [SerializeField] private Vector3 backClassRelativePos;//今いる教室に対しての後ろからの教室座標
+
     private void Start()
     {
         BeginObject.SetActive(false);
@@ -23,25 +28,23 @@ public class StageManager : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision other)
+    
+
+    public void FrontJudge()
     {
-        if(other.gameObject.tag == "FrontJudge")
-        {
-            if (anomalyManager.currentIsAnomaly == true) ClassCount++;
-            else                                         ClassCount = 0;
-        }
-        else if(other.gameObject.tag == "BackJudge")
-        {
-            if (anomalyManager.currentIsAnomaly == false) ClassCount++;
-            else ClassCount = 0;
-        }
+        if (anomalyManager.currentIsAnomaly == true) ClassCount++;
+        else ClassCount = 0;
 
-
+        anomalyManager.GenerateAnomaly(frontClassRelativePos);
+        anomalyManager.DelateAnomaly();
     }
 
-
-    public void NextStage()
+    public void BackJudge()
     {
-        anomalyManager.GenerateAnomaly();
+        if (anomalyManager.currentIsAnomaly == false) ClassCount++;
+        else ClassCount = 0;
+
+        anomalyManager.GenerateAnomaly(backClassRelativePos);
+        anomalyManager.DelateAnomaly();
     }
 }

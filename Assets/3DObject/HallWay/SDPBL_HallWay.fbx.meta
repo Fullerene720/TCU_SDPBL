@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 20dee35fabcfb154fa00af3ae803296c
+guid: 098048efcee31eb47a4ae07dd32f233b
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,18 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.001
-    second: {fileID: 2100000, guid: 0279f84c248f98344bca57cae12757bc, type: 2}
+      name: body
+    second: {fileID: 2100000, guid: d7d217c6c51840b43949a55f885d3d53, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: "\u30C9\u30A2\u9ED2"
-    second: {fileID: 2100000, guid: 4e0b06cabe69dd84fafe62dd3e61077d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u30C9\u30A2\u9ED2.001"
-    second: {fileID: 2100000, guid: 4e0b06cabe69dd84fafe62dd3e61077d, type: 2}
+      name: elevator
+    second: {fileID: 2100000, guid: d96543f251e342349bc606ce53e209da, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -27,53 +22,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: "\u5E8A"
-    second: {fileID: 2100000, guid: 50f692aeb70bf624294b3fe7f18a1511, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u5F8C\u308D\u58C1"
-    second: {fileID: 2100000, guid: a9b4cb82d77653642a8228cd99bf0e26, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u67F1.001"
-    second: {fileID: 2100000, guid: b789a9fdd5846a449aaf0096881a6939, type: 2}
+      name: "\u5ECA\u4E0B\u67F1"
+    second: {fileID: 2100000, guid: 2848ab981534518419abf31387969280, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: "\u767D"
     second: {fileID: 2100000, guid: 7a7fc9e6727156048aca1f6fed9f750f, type: 2}
   - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u767D.001"
-    second: {fileID: 2100000, guid: 7a7fc9e6727156048aca1f6fed9f750f, type: 2}
-  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 20260429_121905134~3
-    second: {fileID: 2800000, guid: 7de51822274106e4d9f648f5e6e35477, type: 3}
+    second: {fileID: 2800000, guid: 7fac68be2d6adda4a8d8e628a2065eee, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: 25507231_m
-    second: {fileID: 2800000, guid: 85fc15b58570cfe46bb7dab32e812031, type: 3}
+    second: {fileID: 2800000, guid: a0dd04b319ff39c49a727c8413dce494, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: 6103DSHhOqL._AC_SX679_
-    second: {fileID: 2800000, guid: 930cdee574e031842940c1021280ecf9, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: PXL_20260430_080655226~3
-    second: {fileID: 2800000, guid: ca131b741f72db144a0410c1148f4566, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: "\u58C1\u30E1\u30A4\u30F3"
-    second: {fileID: 2800000, guid: d37399b1f2204d94d887e88e75a16afc, type: 3}
+      name: corrected_elevator
+    second: {fileID: 2800000, guid: ca4d57a6f2f7e8a42b3221fd9d506cf1, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -116,7 +86,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1

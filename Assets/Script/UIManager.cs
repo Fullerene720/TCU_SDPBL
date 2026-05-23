@@ -1,5 +1,8 @@
+using System.Collections;
+using StarterAssets;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -10,26 +13,30 @@ public class UIManager : MonoBehaviour
         public string[] sentences;  // セリフ
     }
 
-    public TMP_Text dialogueText;  // テキスト表示
-    public Button nextButton; // 次のセリフボタン
+    public TMP_Text messageText;  // テキスト表示
     public GameObject dialogueUI; // UI全体
+    private StarterAssetsInputs _input;
 
-    public UIManager[] dialogueEvents; // 会話データ
-    private int currentDialogueIndex = 0; // 現在の会話イベント
-    private int currentSentenceIndex = 0; // 現在のセリフ
-    private bool isTyping = false; // 文字表示中フラグ
-
-
-    public void UIStartEvent()
-    {
-
-    }
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _input = new StarterAssetsInputs();
         dialogueUI.SetActive(false);
     }
+
+
+
+    public IEnumerator ShowMessage(string message)
+    {
+        var keyboard = Keyboard.current;
+
+        dialogueUI.SetActive(true);
+        messageText.text = message;
+
+        yield return new WaitUntil(() => keyboard.spaceKey.wasPressedThisFrame);
+
+        dialogueUI.SetActive(false);
+    }
+    
 
     // Update is called once per frame
     void Update()

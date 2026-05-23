@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public StageManager stageManager;
     public GameState State { get; private set; } = GameState.Begin;
 
-    public UIManager UI;
+    public EventManager eventManager;
 
     public int CurrentFloor;
     private GameState currentGameState;// Œ»İ‚Ìó‘Ô
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     void StartEvent()
     {
-        UI.UIStartEvent();
+        
         
     }
 
@@ -83,13 +83,14 @@ public class GameManager : MonoBehaviour
     void Begin()
     {
         stageManager.EventSet();
+        eventManager.StartEvent();
     }
 
     // Prepare‚É‚È‚Á‚½‚Æ‚«‚Ìˆ—
     IEnumerator PrepareCoroutine()
     {
         yield return new WaitForSeconds(1);
-        SetCurrentState(GameState.Playing);
+        SetCurrentState(GameState.Begin);
     }
     // Playing‚É‚È‚Á‚½‚Æ‚«‚Ìˆ—
     void Playing()

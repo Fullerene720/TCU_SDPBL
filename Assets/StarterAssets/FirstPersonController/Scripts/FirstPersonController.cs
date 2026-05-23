@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -203,6 +204,24 @@ namespace StarterAssets
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 		}
+
+		public IEnumerator MoveTo(Transform target,float moveSpeed)
+		{
+            while (Vector3.Distance(transform.position, target.position) > 0.01f)
+            {
+                this.transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    target.position,
+                    moveSpeed * Time.deltaTime
+                );
+
+                yield return null;
+            }
+
+
+        }
+
+
 
 		private void JumpAndGravity()
 		{

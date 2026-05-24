@@ -77,8 +77,9 @@ namespace StarterAssets
 
 		[Header("追加項目")]
 		public bool canMove = true;
+		public bool canlook = true;
 
-		private bool IsCurrentDeviceMouse
+        private bool IsCurrentDeviceMouse
 		{
 			get
 			{
@@ -116,17 +117,17 @@ namespace StarterAssets
 
 		private void Update()
 		{
+			if (!canMove) return;
+
 			JumpAndGravity();
 			GroundedCheck();
-			if (canMove)
-			{
-                Move();
-            }
+            Move();
 		}
 
 		private void LateUpdate()
 		{
-			CameraRotation();
+            if (!canlook) return;
+            CameraRotation();
 		}
 
 		private void GroundedCheck()
@@ -207,23 +208,105 @@ namespace StarterAssets
 
 		public IEnumerator MoveTo(Transform target,float moveSpeed)
 		{
-            while (Vector3.Distance(transform.position, target.position) > 0.01f)
+            _input.move = Vector2.zero;
+            _input.look = Vector2.zero;
+
+            while (Vector3.Distance(transform.position, target.position) > 0.1f)
             {
-                this.transform.position = Vector3.MoveTowards(
-                    transform.position,
-                    target.position,
-                    moveSpeed * Time.deltaTime
+				Vector3 direction = (target.position - transform.position).normalized;
+
+				Vector3 moveVector = direction * moveSpeed*Time.deltaTime;
+
+				_controller.Move(moveVector);
+
+				yield return null;
+            }
+
+            transform.position = target.position;
+
+        }
+
+        public IEnumerator LookAtTarget(Transform target,float lookSpeed  )
+        {
+            canlook = false;
+
+            while (true)
+            {
+                Vector3 direction = target.position - transform.position;
+
+                // 水平方向
+                Vector3 flatDirection =
+                    new Vector3(direction.x, 0f, direction.z);
+
+                if (flatDirection.sqrMagnitude < 0.001f)
+                    yield break;
+
+                Quaternion targetBodyRotation =
+                    Quaternion.LookRotation(flatDirection);
+
+                // 左右回転
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetBodyRotation,
+                    lookSpeed * Time.deltaTime
                 );
+
+                // ローカル方向へ変換
+                Vector3 localDir =
+                    transform.InverseTransformDirection(direction.normalized);
+
+                // Pitch計算
+                float targetPitch =
+                    -Mathf.Atan2(
+                        localDir.y,
+                        new Vector2(localDir.x, localDir.z).magnitude
+                    ) * Mathf.Rad2Deg;
+
+                targetPitch =
+                    ClampAngle(targetPitch, BottomClamp, TopClamp);
+
+                // 上下回転
+                _cinemachineTargetPitch = Mathf.Lerp(
+                    _cinemachineTargetPitch,
+                    targetPitch,
+                    lookSpeed * Time.deltaTime
+                );
+
+                CinemachineCameraTarget.transform.localRotation =
+                    Quaternion.Euler(_cinemachineTargetPitch, 0f, 0f);
+
+                // 十分向いたら終了
+                float angle =
+                    Quaternion.Angle(
+                        transform.rotation,
+                        targetBodyRotation
+                    );
+
+                float pitchDiff =
+                    Mathf.Abs(_cinemachineTargetPitch - targetPitch);
+
+                if (angle < 1f && pitchDiff < 1f)
+                    break;
 
                 yield return null;
             }
 
+            canlook = true;
 
+        }
+
+        public IEnumerator Reset()
+		{
+            _input.jump = false;
+            _input.move = Vector2.zero;
+            _input.look = Vector2.zero;
+
+			yield return null;
         }
 
 
 
-		private void JumpAndGravity()
+        private void JumpAndGravity()
 		{
 			if (Grounded)
 			{

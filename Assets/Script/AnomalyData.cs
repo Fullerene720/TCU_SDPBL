@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 
 public enum AnomalyType
@@ -16,6 +17,9 @@ public class AnomalyData : MonoBehaviour
     public AnomalyType type;
 
     public GameObject ClassroomPerfab;
+
+    public TMP_Text classNumber;  // テキスト表示
+    public GameObject NumberUI; // UI全体
 
 
     public bool isAnomaly = true;

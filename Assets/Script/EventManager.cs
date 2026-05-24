@@ -1,7 +1,8 @@
+using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
-using StarterAssets;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class EventManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class EventManager : MonoBehaviour
 
     [SerializeField]
     private UIManager uiManager;
+
+    private StarterAssetsInputs _input;
 
 
     public void StartEvent()
@@ -32,15 +35,23 @@ public class EventManager : MonoBehaviour
                 case EventType.Talk:
                     yield return StartCoroutine(uiManager.ShowMessage(data.message));
                     break;
+                case EventType.LookAt:
+                    yield return StartCoroutine(player.LookAtTarget(data.targetPosition,data.moveSpeed));
+                    break;
                 case EventType.Move:
                     yield return StartCoroutine(player.MoveTo(data.targetPosition,data.moveSpeed));
                     break;
                 case EventType.Wait:
                     yield return new WaitForSeconds(data.waitTime);
                     break;
+                case EventType.Change:
+                    yield return StartCoroutine(uiManager.ChangeObject(data.Object, data.isActive));
+                    break;
+                case EventType.end:
+                    yield return StartCoroutine(player.Reset());
+                    break;
 
             }
-            Debug.Log("イベントの一つが終了");
         }
         player.canMove = true;
         GameManager.Instance.SetCurrentState(GameState.Start);

@@ -15,7 +15,6 @@ public class EventManager : MonoBehaviour
     [SerializeField]
     private UIManager uiManager;
 
-    private StarterAssetsInputs _input;
 
 
     public void StartEvent()

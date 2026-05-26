@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 public enum GameState
 {
     Title,//タイトル画面
-    Begin,//最初のシーン（ゲームスタート前）
-    Start,//情報リセット用
+    Start,//ゲームイベント開始
     Prepare,//ポーズ画面
     Playing,//ゲーム中
     End//ゲームクリアorゲームオーバー
@@ -18,10 +17,9 @@ public class GameManager : MonoBehaviour
     //public static GameManager Instance;
     public static GameManager Instance { get; private set; }
 
-    public StageManager stageManager;
-    public GameState State { get; private set; } = GameState.Begin;
-
-    public EventManager eventManager;
+    private StageManager stageManager;
+    private EventManager eventManager;
+    public GameState State { get; private set; } 
 
     public int CurrentFloor;
     private GameState currentGameState;// 現在の状態
@@ -36,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetCurrentState(GameState.Begin);
+        SetCurrentState(GameState.Start);
     }
 
     public void SetCurrentState(GameState state)
@@ -52,14 +50,11 @@ public class GameManager : MonoBehaviour
             case GameState.Title:
 
                 break;
-            case GameState.Begin:
-                Begin();
-                break;
             case GameState.Start:
                 StartEvent();
                 break;
             case GameState.Prepare:
-                StartCoroutine(PrepareCoroutine());
+                Prepare();
                 break;
             case GameState.Playing:
                 Playing();
@@ -73,32 +68,26 @@ public class GameManager : MonoBehaviour
     }
 
 
-    void StartEvent()
-    {
-        
-        
-    }
-
-    //
-    void Begin()
+    private void StartEvent()//最初のイベント
     {
         stageManager.EventSet();
         eventManager.StartEvent();
     }
 
-    // Prepareになったときの処理
-    IEnumerator PrepareCoroutine()
+
+    private void Prepare()//ポーズ画面になったら
     {
-        yield return new WaitForSeconds(1);
-        SetCurrentState(GameState.Begin);
+        SetCurrentState(GameState.Playing);
     }
-    // Playingになったときの処理
-    void Playing()
+
+    private void Playing()//プレイ中
     {
-        
+        stageManager.GameStart();
     }
-    // Endになったときの処理
-    void EndEvent()
+
+
+    private void EndEvent()//ゲームクリアイベント
     {
+
     }
 }

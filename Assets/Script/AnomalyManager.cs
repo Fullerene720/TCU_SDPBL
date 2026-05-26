@@ -6,8 +6,7 @@ using UnityEngine;
 public class AnomalyManager : MonoBehaviour
 {
 
-    public AnomalySelector selector;
-
+    private AnomalySelector selector;
     public bool currentIsAnomaly = false;
     private Vector3 currentPosition;
     private Vector3 currentRotation;
@@ -23,9 +22,9 @@ public class AnomalyManager : MonoBehaviour
     }
 
 
-    public void GenerateAnomaly(Vector3 position)//¶¬ˆÙ•Ï‘I‘ğ
+    public void GenerateAnomaly(Vector3 position,int classCount)//¶¬ˆÙ•Ï‘I‘ğ
     {
-        AnomalyData selected = selector.Select();
+        AnomalyData selected = selector.Select(classCount);
         Spawn(selected,position);
     }
 

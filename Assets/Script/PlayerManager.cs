@@ -25,5 +25,13 @@ public class PlayerManager : MonoBehaviour
         {
             stageManager.BackJudge();
         }
+        else if(other.gameObject.tag == "HallFront")
+        {
+            stageManager.HallChangeFront();
+        }
+        else if (other.gameObject.tag == "HallBack")
+        {
+            stageManager.HallChangeBack();
+        }
     }
 }

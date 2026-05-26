@@ -7,6 +7,8 @@ TagManager:
   - CinemachineTarget
   - FrontJudge
   - BackJudge
+  - HallFront
+  - HallBack
   layers:
   - Default
   - TransparentFX

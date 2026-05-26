@@ -2,52 +2,81 @@
 
 namespace Manager{
     class GameManager {
-        +Title
-        +Begin
-        +Start
-        +Prepare
-        +Playing
-        +End
+        +void SetCurrentState(GameState state)
+        -StartEvent()
+        -Prepare()
+        -Playing()
+        -EndEvent()
+
     }
 
-    class PlayerManager {
-        +Move()
-    }
     class AnomalyManager{
-
+        + int progressNumber
+        + bool currentIsAnomaly
+        + void GenerateAnomaly()
+        + void DelateAnomaly()
     }
+    
+    class EventManager{
+        -eventList : List<EventData>
+        +void StartEvent()
+        -IEnumerator EventCoroutine()
+    }
+
+    GameManager -- EventManager
 
 
     class StageManager{
-        +changeStage()
+        +void EventSet()
+        +void FrontJudge()
+        +void BackJudge()
     }
 
     class UIManager{
 
     }
+
+    EventManager -- UIManager
 }
-GameManager -- PlayerManager
 GameManager -- StageManager
 StageManager -- AnomalyManager
 
-namespace Player{
-    class PlayerTracker{
-
-    }
+class EventData{
+    +Move
+    +LookAt
+    +Talk
+    +Wait
+    +Change
+    +end
 }
+
+EventData "a lot" --o "1" EventManager 
+
+namespace Player{
+    class FirstPersonContoroller{
+        +IEnumerator MoveTo(target,moveSpeed)
+        +IEnumerator LookAtTarget(target,LookSpeed)
+    }
+
+    EventManager -- FirstPersonContoroller
+}
+note top of FirstPersonContoroller
+    StandardAssetの
+    デフォルトプログラムを改変
+    end note
 
 namespace Anomaly{
     class AnomalyData{
 
     }
     class AnomalySelector{
-        +Select()
-        +Delate()
+        +void Select()
+        +void Delate()
+        -anomalies : List<AnomalyData>
     }
 }
 AnomalySelector -- AnomalyManager
 AnomalyData "16" --o "1" AnomalySelector : contains 
-AnomalySelector -- PlayerTracker
 
 
 @enduml

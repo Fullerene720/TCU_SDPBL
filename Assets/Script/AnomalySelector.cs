@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AnomalySelector : MonoBehaviour
 {
-    private List<AnomalyData> anomalies=new List<AnomalyData>();
-    int choiceNum = -1;
+    public List<AnomalyData> anomalies=new List<AnomalyData>();
+    int choiceNum = 0;
 
     
     public AnomalyData Select(int num)

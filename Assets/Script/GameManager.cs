@@ -17,8 +17,8 @@ public class GameManager : MonoBehaviour
     //public static GameManager Instance;
     public static GameManager Instance { get; private set; }
 
-    private StageManager stageManager;
-    private EventManager eventManager;
+    public StageManager stageManager;
+    public EventManager eventManager;
     public GameState State { get; private set; } 
 
     public int CurrentFloor;
@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public void SetCurrentState(GameState state)
     {
         currentGameState = state;
+        State= state;
         OnGameStateChanged(currentGameState);
     }
 
@@ -48,7 +49,6 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case GameState.Title:
-
                 break;
             case GameState.Start:
                 StartEvent();

@@ -53,7 +53,7 @@ public class EventManager : MonoBehaviour
             }
         }
         player.canMove = true;
-        GameManager.Instance.SetCurrentState(GameState.Start);
+        GameManager.Instance.SetCurrentState(GameState.Playing);
     } 
 
 

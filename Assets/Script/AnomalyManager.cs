@@ -8,8 +8,8 @@ public class AnomalyManager : MonoBehaviour
 
     private AnomalySelector selector;
     public bool currentIsAnomaly = false;
-    private Vector3 currentPosition;
-    private Vector3 currentRotation;
+    public Vector3 currentPosition;
+    public Vector3 currentRotation;
 
 
     public PlayerTracker tracker;
@@ -57,10 +57,7 @@ public class AnomalyManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.State != GameState.Playing)
-        {
-            return;
-        }
+        
 
 
     }

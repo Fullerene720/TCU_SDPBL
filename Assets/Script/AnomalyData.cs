@@ -16,7 +16,6 @@ public class AnomalyData : MonoBehaviour
 
     public AnomalyType type;
 
-    public GameObject ClassroomPerfab;
 
     public TMP_Text classNumber;  // テキスト表示
     public GameObject NumberUI; // UI全体
@@ -32,6 +31,7 @@ public class AnomalyData : MonoBehaviour
     private void Start()
     {
         this.gameObject.SetActive(false);
+        isAnomaly = true;
 
         if (type == AnomalyType.NoAnomaly)
         {

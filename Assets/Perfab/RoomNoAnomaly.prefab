@@ -509,7 +509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc38ebd7fc1ec2b4b9f76544570290f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorManager
-  door: {fileID: 0}
+  door: {fileID: 7359773517149443596}
   openAngle: 90
   openSpeed: 3
 --- !u!1 &259700774369356311
@@ -18729,7 +18729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc38ebd7fc1ec2b4b9f76544570290f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorManager
-  door: {fileID: 0}
+  door: {fileID: 7685325665059563975}
   openAngle: 90
   openSpeed: 3
 --- !u!1 &8717292359788788431
@@ -20090,9 +20090,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnomalyData
   anomalyName: NoAnomaly
   type: 0
-  ClassroomPerfab: {fileID: 9223221233337771674, guid: faacfff11e75e134588feed07bdabc23, type: 3}
-  classNumber: {fileID: 0}
-  NumberUI: {fileID: 0}
+  classNumber: {fileID: 4473232753787052602}
+  NumberUI: {fileID: 7170476337793717019}
   isAnomaly: 1
   UnlockLevel: 0
   spawnWeight: 0

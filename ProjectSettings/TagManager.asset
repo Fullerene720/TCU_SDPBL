@@ -8,7 +8,6 @@ TagManager:
   - FrontJudge
   - BackJudge
   - HallFront
-  - HallBack
   layers:
   - Default
   - TransparentFX

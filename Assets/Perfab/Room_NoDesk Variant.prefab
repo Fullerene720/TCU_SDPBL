@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6111344759255436323, guid: c24a50cabd700684bbfc4d6510de8a22, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9165738568761868399, guid: c24a50cabd700684bbfc4d6510de8a22, type: 3}
       propertyPath: m_Name
       value: Room_NoDesk Variant

@@ -34,12 +34,17 @@ public class PlayerManager : MonoBehaviour
             }
             else if (other.gameObject.tag == "HallFront")
             {
-                stageManager.HallChangeFront();
+                stageManager.HallChange();
             }
-            else if (other.gameObject.tag == "HallBack")
+
+        }else if(GameManager.Instance.State == GameState.Start)
+        {
+            if (other.gameObject.tag == "HallFront")
             {
-                stageManager.HallChangeBack();
+                Debug.Log("FrontJudge");
+                stageManager.FirstHallChange();
             }
         }
+         
     }
 }

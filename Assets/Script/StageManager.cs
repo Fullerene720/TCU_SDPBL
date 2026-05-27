@@ -4,9 +4,8 @@ using UnityEngine.UIElements;
 
 public class StageManager : MonoBehaviour
 {
-    public AnomalyManager anomalyManager;
+    [SerializeField]  private AnomalyManager anomalyManager;
     [SerializeField] private GameObject BeginObject;
-    [SerializeField] private GameObject FirstRoom;
     [SerializeField] private GameObject ChangeHall;
 
     [SerializeField] public int ClassCount = 0;//もし行動に成功したら増える、失敗したら0に戻る
@@ -16,6 +15,13 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Vector3 hallwayRelativePos;//今いる教室に対しての廊下の相対座標
     [SerializeField] private Vector3 frontClassRelativePos;//今いる教室に対しての前からの教室座標
     [SerializeField] private Vector3 backClassRelativePos;//今いる教室に対しての後ろからの教室座標
+
+    private int shift;
+
+    public void Start()
+    {
+        shift = 1;
+    }
 
     public void GameStart()
     {
@@ -33,7 +39,6 @@ public class StageManager : MonoBehaviour
     public void EventSet()
     {
         BeginObject.SetActive(true);
-        FirstRoom.SetActive(true);
     }
 
 
@@ -46,9 +51,6 @@ public class StageManager : MonoBehaviour
         BaseCount++;
 
         anomalyManager.GenerateAnomaly(frontClassRelativePos,ClassCount);
-        HallWayChange();
-        anomalyManager.DelateAnomaly();
-
     }
 
     public void BackJudge()
@@ -58,22 +60,27 @@ public class StageManager : MonoBehaviour
         BaseCount++;
 
         anomalyManager.GenerateAnomaly(backClassRelativePos,ClassCount);
-        HallWayChange();
-        anomalyManager.DelateAnomaly();
     }
 
     private void HallWayChange()
     {
-        ChangeHall.transform.position = anomalyManager.currentPosition + hallwayRelativePos;
-        ChangeHall.transform.eulerAngles = anomalyManager.currentRotation + new Vector3(0, 180, 0);
+        Quaternion rot =anomalyManager.currentRotation;
+
+        hallwayRelativePos *= shift;
+        Vector3 pos = anomalyManager.currentPosition + rot * hallwayRelativePos;
+
+        ChangeHall.transform.SetPositionAndRotation(pos, rot);
+
+        shift *= -1;
     }
 
-    public void HallChangeFront()
+    public void HallChange()
     {
-
+        HallWayChange();
+        anomalyManager.DelateAnomaly();
     }
-    public void HallChangeBack()
+    public void FirstHallChange()
     {
-
+        HallWayChange();
     }
 }

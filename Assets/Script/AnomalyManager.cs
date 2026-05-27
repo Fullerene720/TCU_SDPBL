@@ -1,30 +1,30 @@
 using System.Collections.Generic;
 using Mono.Cecil;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnomalyManager : MonoBehaviour
 {
 
-    private AnomalySelector selector;
+    [SerializeField]  private AnomalySelector selector;
     public bool currentIsAnomaly = false;
     public Vector3 currentPosition;
-    public Vector3 currentRotation;
-
-
-    public PlayerTracker tracker;
-
+    public Quaternion currentRotation;
+    [SerializeField] private Transform firstRoomPos;
+    private int shift = -1;
 
     private void Start()
     {
-        currentPosition = new Vector3(0,0,0);
-        currentRotation = new Vector3(0,0,0);
+        currentPosition = firstRoomPos.localPosition;
+        currentRotation = firstRoomPos.rotation;
+        currentIsAnomaly = false;
     }
 
 
     public void GenerateAnomaly(Vector3 position,int classCount)//生成異変選択
     {
-        AnomalyData selected = selector.Select(classCount);
+        AnomalyData selected = selector.Select(classCount, selector.GetChoiceNum());
         Spawn(selected,position);
     }
 
@@ -35,20 +35,34 @@ public class AnomalyManager : MonoBehaviour
         delate(delated);
     }
 
-    
-    void Spawn(AnomalyData data ,Vector3 position)//異変生成
+
+    void Spawn(AnomalyData data, Vector3 position)
     {
         data.gameObject.SetActive(true);
-        data.transform.position = currentPosition + position;
-        data.transform.eulerAngles = currentRotation + new Vector3(0, 180, 0);
-        currentPosition = data.transform.position;
-        currentRotation = data.transform.eulerAngles;
 
-        if (data.isAnomaly== true){ currentIsAnomaly=true; }
-        else { currentIsAnomaly=false; }
+        position *= shift;
+
+        // Position
+        Vector3 newPos = currentPosition + position;
+
+
+        // Rotation
+        Quaternion newRot =
+            currentRotation * Quaternion.Euler(0, 180, 0);
+
+        // 一括設定
+        data.transform.SetPositionAndRotation(newPos, newRot);
+
+        // 現在値更新
+        currentPosition = data.transform.position;
+        currentRotation = data.transform.rotation;
+
+        shift *= -1;
+
+        currentIsAnomaly = data.isAnomaly;
     }
 
-    
+
     void delate(AnomalyData data)//異変削除
     {
         data.gameObject.SetActive(false);

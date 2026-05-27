@@ -19,6 +19,7 @@ public class AnomalyData : MonoBehaviour
 
     public TMP_Text classNumber;  // テキスト表示
     public GameObject NumberUI; // UI全体
+    public bool isFirst = false; 
 
 
     public bool isAnomaly = true;
@@ -30,8 +31,10 @@ public class AnomalyData : MonoBehaviour
 
     private void Start()
     {
-        this.gameObject.SetActive(false);
-        isAnomaly = true;
+
+
+
+            isAnomaly = true;
 
         if (type == AnomalyType.NoAnomaly)
         {

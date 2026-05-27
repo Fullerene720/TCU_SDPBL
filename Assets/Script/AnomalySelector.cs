@@ -5,16 +5,17 @@ using UnityEngine;
 public class AnomalySelector : MonoBehaviour
 {
     public List<AnomalyData> anomalies=new List<AnomalyData>();
-    int choiceNum = 0;
+    public int choiceNum = 0;
 
-    
-    public AnomalyData Select(int num)
+    public int GetChoiceNum()
+    {
+        return choiceNum;
+    }
+
+    public AnomalyData Select(int num, int choiceNum)
     {
         
-        //選択ロジックを記述
-        //今はリストから順番に代わっていくようにしている。
-        //今後、PlayerTrackerなどを使ってランダムかつ重みを付けたい。
-        choiceNum++;
+        choiceNum = Random.Range(1, 4);
         return anomalies[choiceNum];
         
     }

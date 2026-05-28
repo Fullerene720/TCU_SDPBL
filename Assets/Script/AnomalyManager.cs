@@ -24,7 +24,7 @@ public class AnomalyManager : MonoBehaviour
 
     public void GenerateAnomaly(Vector3 position,int classCount)//¶¬ˆÙ•Ï‘I‘ğ
     {
-        AnomalyData selected = selector.Select(classCount, selector.GetChoiceNum());
+        AnomalyData selected = selector.Select(classCount);
         Spawn(selected,position);
     }
 

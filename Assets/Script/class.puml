@@ -1,82 +1,158 @@
-@startuml SDPBL
+@startuml SDPBL_ClassDiagram
 
-namespace Manager{
-    class GameManager {
-        +void SetCurrentState(GameState state)
-        -StartEvent()
-        -Prepare()
-        -Playing()
-        -EndEvent()
+!define ENUM_COLOR #FFE4B5
+!define MONO_COLOR #E6E6FA
+!define DATA_COLOR #FFB6C1
+!define MANAGER_COLOR #ADD8E6
 
-    }
-
-    class AnomalyManager{
-        + int progressNumber
-        + bool currentIsAnomaly
-        + void GenerateAnomaly()
-        + void DelateAnomaly()
-    }
-    
-    class EventManager{
-        -eventList : List<EventData>
-        +void StartEvent()
-        -IEnumerator EventCoroutine()
-    }
-
-    GameManager -- EventManager
-
-
-    class StageManager{
-        +void EventSet()
-        +void FrontJudge()
-        +void BackJudge()
-    }
-
-    class UIManager{
-
-    }
-
-    EventManager -- UIManager
-}
-GameManager -- StageManager
-StageManager -- AnomalyManager
-
-class EventData{
-    +Move
-    +LookAt
-    +Talk
-    +Wait
-    +Change
-    +end
+enum GameState {
+    Title
+    Start
+    Prepare
+    Playing
+    End
 }
 
-EventData "a lot" --o "1" EventManager 
-
-namespace Player{
-    class FirstPersonContoroller{
-        +IEnumerator MoveTo(target,moveSpeed)
-        +IEnumerator LookAtTarget(target,LookSpeed)
-    }
-
-    EventManager -- FirstPersonContoroller
+enum EventType {
+    Move
+    LookAt
+    Talk
+    Wait
+    Change
+    end
 }
-note top of FirstPersonContoroller
-    StandardAssetの
-    デフォルトプログラムを改変
-    end note
 
-namespace Anomaly{
-    class AnomalyData{
-
-    }
-    class AnomalySelector{
-        +void Select()
-        +void Delate()
-        -anomalies : List<AnomalyData>
-    }
+enum AnomalyType {
+    NoAnomaly
+    HugeAnomaly
+    NormalAnomaly
+    TinyAnomaly
 }
-AnomalySelector -- AnomalyManager
-AnomalyData "16" --o "1" AnomalySelector : contains 
 
+class GameManager {
+    +{static} Instance : GameManager
+    +clearTime : float
+    +State : GameState
+    -currentGameState : GameState
+    +SetCurrentState(state : GameState) : void
+    -StartEvent() : void
+    -Playing() : void
+    -EndEvent() : void
+    +Reset() : void
+}
+
+class EventManager {
+    -eventList : List<EventData>
+    -EndeventList : List<EventData>
+    +StartEvent() : void
+    +EndEvent() : void
+    -EventCoroutine() : IEnumerator
+    -EndEventCoroutine() : IEnumerator
+}
+
+class EventData {
+    +type : EventType
+    +moveSpeed : float
+    +message : string
+    +waitTime : float
+}
+
+class StageManager {
+    -WallFront : GameObject
+    -WallBack : GameObject
+    +ClassCount : int
+    +BaseCount : int
+    +CheckCount : int
+    +GameStart() : void
+    +EventSet() : void
+    +FrontJudge() : void
+    +BackJudge() : void
+    +HallChange() : void
+    +FirstHallChange() : void
+}
+
+class AnomalyManager {
+    +currentIsAnomaly : bool
+    +currentPosition : Vector3
+    +currentRotation : Quaternion
+    +GenerateAnomaly(position : Vector3, classCount : int) : void
+    +DelateAnomaly() : void
+}
+
+class AnomalySelector {
+    +previousChoiceNum : int
+    +Select(floor : int) : AnomalyData
+    +Delate() : AnomalyData
+}
+
+class AnomalyData {
+    +anomalyName : string
+    +type : AnomalyType
+    +classNumber : TMP_Text
+    +isAnomaly : bool
+}
+
+class AnomalyRate {
+    +noAnomaly : int
+    +huge : int
+    +normal : int
+}
+
+class UIManager {
+    +messageText : TMP_Text
+    -_input : StarterAssetsInputs
+    +ShowMessage(message : string) : IEnumerator
+    +ChangeObject(obj : GameObject, isActive : bool) : IEnumerator
+}
+
+
+class PlayerManager {
+    +stageManager : StageManager
+    -OnTriggerEnter(other : Collider) : void
+}
+
+class DoorManager {
+    -OnTriggerEnter(other : Collider) : void
+    -OnTriggerExit(other : Collider) : void
+    -RotateDoor(target : Quaternion) : IEnumerator
+}
+
+
+class result {
+    -resultText : TextMeshProUGUI
+    -ResultCoroutine() : IEnumerator
+}
+
+class FirstPersonController {
+    +MoveTo(target : Vector3, moveSpeed : float) : IEnumerator
+    +LookAtTarget(target : Vector3, LookSpeed : float) : IEnumerator
+    +Reset() : IEnumerator
+}
+
+' Relationships
+GameManager --> EventManager : イベント開始
+GameManager -down-> StageManager
+GameManager .left.> GameState
+
+EventManager --> UIManager 
+EventManager --> FirstPersonController 
+EventManager "1" *-- "many" EventData 
+
+StageManager --> AnomalyManager
+StageManager --> DoorManager
+
+AnomalyManager --> AnomalySelector 
+AnomalySelector "1" *-- "many" AnomalyData
+AnomalySelector "1" *-- "many" AnomalyRate
+
+PlayerManager --> StageManager : ステージ生成のトリガー
+
+
+result --> StageManager : 通過教室数取得
+result -left-> GameManager : タイム取得
+
+AnomalyData ..> AnomalyType
+
+EventData ..> EventType
 
 @enduml

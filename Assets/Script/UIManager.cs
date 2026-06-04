@@ -15,11 +15,9 @@ public class UIManager : MonoBehaviour
 
     public TMP_Text messageText;  // テキスト表示
     public GameObject dialogueUI; // UI全体
-    private StarterAssetsInputs _input;
 
     void Start()
     {
-        _input = new StarterAssetsInputs();
         dialogueUI.SetActive(false);
     }
 

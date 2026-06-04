@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Accessibility;
-using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 public enum GameState
 {
     Title,//タイトル画面
@@ -17,12 +14,35 @@ public class GameManager : MonoBehaviour
     //public static GameManager Instance;
     public static GameManager Instance { get; private set; }
 
-    public StageManager stageManager;
-    public EventManager eventManager;
+    private StageManager stageManager;
+    private EventManager eventManager;
+
+    public float clearTime { get; private set; } // クリア時間
     public GameState State { get; private set; } 
 
     public int CurrentFloor;
     private GameState currentGameState;// 現在の状態
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        stageManager = FindAnyObjectByType<StageManager>();
+        eventManager = FindAnyObjectByType<EventManager>();
+
+        if (scene.name == "Main")
+        {
+            SetCurrentState(GameState.Start);
+        }
+    }
 
     void Awake()
     {
@@ -34,7 +54,15 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetCurrentState(GameState.Start);
+        SetCurrentState(GameState.Title);
+    }
+
+    private void Update()
+    {
+        if (currentGameState == GameState.Playing)
+        {
+            clearTime += Time.deltaTime;
+        }
     }
 
     public void SetCurrentState(GameState state)
@@ -88,6 +116,12 @@ public class GameManager : MonoBehaviour
 
     private void EndEvent()//ゲームクリアイベント
     {
+        eventManager.EndEvent();
+    }
+
+    public void Reset()
+    {
+        clearTime = 0f;
 
     }
 }

@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using Mono.Cecil;
-using NUnit.Framework;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnomalyManager : MonoBehaviour
@@ -19,6 +15,7 @@ public class AnomalyManager : MonoBehaviour
         currentPosition = firstRoomPos.localPosition;
         currentRotation = firstRoomPos.rotation;
         currentIsAnomaly = false;
+        shift = 1;
     }
 
 
@@ -26,6 +23,7 @@ public class AnomalyManager : MonoBehaviour
     {
         AnomalyData selected = selector.Select(classCount);
         Spawn(selected,position);
+        ChangeFloorNum(selected,classCount);
     }
 
     
@@ -66,6 +64,40 @@ public class AnomalyManager : MonoBehaviour
     void delate(AnomalyData data)//àŸïœçÌèú
     {
         data.gameObject.SetActive(false);
+    }
+
+    private void ChangeFloorNum(AnomalyData data, int classCount)//äKêîï\é¶ïœçX
+    {
+
+        switch (classCount)
+        {
+            case 0:
+                data.ChangeFloorString("1BF");
+                break;
+
+            case 1:
+                data.ChangeFloorString("1BE");
+                break;
+
+            case 2:
+                data.ChangeFloorString("1BD");
+                break;
+
+            case 3:
+                data.ChangeFloorString("1BC");
+                break;
+            case 4:
+                data.ChangeFloorString("1BB");
+                break;
+            case 5:
+                data.ChangeFloorString("1BA");
+                break;
+
+            default:
+                data.ChangeFloorString("Error");
+                break;
+        }
+
     }
 
 

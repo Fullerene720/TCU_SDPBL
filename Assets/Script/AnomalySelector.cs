@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
 
 public class AnomalySelector : MonoBehaviour
@@ -7,21 +6,26 @@ public class AnomalySelector : MonoBehaviour
     public List<AnomalyData> anomalies=new List<AnomalyData>();
     public List<AnomalyRate> rates;
     public int choiceNum = 0;
+    public int previousChoiceNum = 0;
 
     public int GetChoiceNum()
     {
-        return choiceNum;
+        return previousChoiceNum;
     }
 
     public AnomalyData Select(int floor)
     {
 
+        Debug.Log(previousChoiceNum);
         AnomalyType selectedType;
 
         // 0階
-        if (floor == 0)
+        if (floor < 1)
         {
             selectedType = AnomalyType.NoAnomaly;
+            previousChoiceNum = choiceNum;
+            choiceNum = 0;
+            return anomalies[choiceNum];
         }
         else
         {
@@ -30,7 +34,7 @@ public class AnomalySelector : MonoBehaviour
 
         List<int> candidates = new List<int>();//選ばれたTypeだけのリストを作成(元のリストのindexを保存)
 
-        for (int i = 0; i < anomalies.Count; i++)//異変の数だけ繰り返す
+        for (int i = 1; i < anomalies.Count; i++)//異変の数だけ繰り返す
         {
             // Typeと一致しないiがあったらスキップ
             if (anomalies[i].type != selectedType)
@@ -45,44 +49,49 @@ public class AnomalySelector : MonoBehaviour
 
         int rand = Random.Range(0, candidates.Count);
 
+        previousChoiceNum = choiceNum;
         choiceNum = candidates[rand];
-
-
         return anomalies[choiceNum];
 
     }
 
     AnomalyType GetRandomType(int floor)//階数によってTypeの出やすさが変化
     {
-        AnomalyRate rate = rates[floor];
-
-        int rand = Random.Range(0, 100);
-
-        if (rand < rate.noAnomaly)//異変無しの確率を引き当てたら
+        while (true)
         {
-            return AnomalyType.NoAnomaly;
+            AnomalyRate rate = rates[floor];
+            int rand = Random.Range(0, 100);
+
+            AnomalyType result;
+
+            if (rand < rate.noAnomaly)
+                result = AnomalyType.NoAnomaly;
+            else if (rand < rate.noAnomaly + rate.huge)
+                result = AnomalyType.HugeAnomaly;
+            else if (rand < rate.noAnomaly + rate.huge + rate.normal)
+                result = AnomalyType.NormalAnomaly;
+            else
+                result = AnomalyType.TinyAnomaly;
+
+            // 前回も今回もNoAnomalyなら引き直し
+            if (
+                result == AnomalyType.NoAnomaly &&
+                anomalies[choiceNum].type == AnomalyType.NoAnomaly &&
+                previousChoiceNum != 0
+            )
+            {
+                continue;
+            }
+
+            return result;
         }
-
-        rand -= rate.noAnomaly;
-
-        if (rand < rate.huge)
-        {
-            return AnomalyType.HugeAnomaly;
-        }
-
-        rand -= rate.huge;
-
-        if (rand < rate.normal)
-        {
-            return AnomalyType.NormalAnomaly;
-        }
-
-        return AnomalyType.TinyAnomaly;
     }
+
+    
 
     public AnomalyData Delate()
     {
-        return anomalies[choiceNum];
+        return anomalies[previousChoiceNum];
     }
 
 }

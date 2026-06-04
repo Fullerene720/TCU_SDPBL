@@ -19,14 +19,9 @@ public class DoorManager : MonoBehaviour
 
     private void Start()
     {
-        closedRotation = door.rotation;
+        closedRotation = door.localRotation;
 
-        openRotation =
-            Quaternion.Euler(
-                door.eulerAngles.x,
-                door.eulerAngles.y + openAngle,
-                door.eulerAngles.z
-            );
+        openRotation = closedRotation *Quaternion.Euler(0f, openAngle, 0f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,11 +51,11 @@ public class DoorManager : MonoBehaviour
 
     private IEnumerator RotateDoor(Quaternion target)
     {
-        while (Quaternion.Angle(door.rotation, target) > 0.5f)
+        while (Quaternion.Angle(door.localRotation, target) > 0.5f)
         {
-            door.rotation =
+            door.localRotation =
                 Quaternion.Slerp(
-                    door.rotation,
+                    door.localRotation,
                     target,
                     openSpeed * Time.deltaTime
                 );
@@ -68,6 +63,6 @@ public class DoorManager : MonoBehaviour
             yield return null;
         }
 
-        door.rotation = target;
+        door.localRotation = target;
     }
 }

@@ -1,6 +1,4 @@
-using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class StageManager : MonoBehaviour
 {
@@ -25,7 +23,10 @@ public class StageManager : MonoBehaviour
     {
         shift = 1;
         WallBack.SetActive(false);
-        WallFront.SetActive(false);
+        WallFront.SetActive(true);
+        ClassCount = -1;
+        BaseCount = 0;
+        CheckCount = 0;
     }
 
     public void GameStart()
@@ -40,7 +41,11 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        
+        if (ClassCount > 5&&GameManager.Instance.State==GameState.Playing)
+        {
+            
+            GameManager.Instance.SetCurrentState(GameState.End);
+        }
     }
     public void EventSet()
     {
@@ -52,7 +57,7 @@ public class StageManager : MonoBehaviour
 
     public void FrontJudge()//ëOÇÃî‡Ç©ÇÁèoÇΩÇÁ
     {
-        if (CheckCount != ClassCount) return;
+        if (CheckCount != BaseCount) return;
         if (anomalyManager.currentIsAnomaly == true) ClassCount++;
         else ClassCount = 0;
         BaseCount++;
@@ -63,7 +68,7 @@ public class StageManager : MonoBehaviour
 
     public void BackJudge()//å„ÇÎÇÃî‡Ç©ÇÁèoÇΩÇÁ
     {
-        if (CheckCount != ClassCount) return;
+        if (CheckCount != BaseCount) return;
         if (anomalyManager.currentIsAnomaly == false) ClassCount++;
         else ClassCount = 0;
         BaseCount++;
@@ -91,12 +96,14 @@ public class StageManager : MonoBehaviour
 
     public void HallChange()
     {
+        Debug.Log("HallChange");
         HallWayChange();
         anomalyManager.DelateAnomaly();
     }
 
     public void FirstHallChange()
     {
+        Debug.Log("FirstHallChange");
         HallWayChange();
     }
 }

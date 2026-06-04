@@ -34,4 +34,11 @@ public class AnomalyData : MonoBehaviour
             isAnomaly = false;
         }
     }
+
+    public void ChangeFloorString(string anomalyName)
+    {
+        classNumber.text = anomalyName;
+    }
+
+
 }

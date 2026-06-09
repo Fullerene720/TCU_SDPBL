@@ -7,4 +7,11 @@ public class TitleManager : MonoBehaviour
     {
         SceneManager.LoadScene("Main");
     }
+
+    public void Start()
+    {
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true; ;
+    }
 }

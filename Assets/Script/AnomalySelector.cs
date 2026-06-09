@@ -5,12 +5,18 @@ public class AnomalySelector : MonoBehaviour
 {
     public List<AnomalyData> anomalies=new List<AnomalyData>();
     public List<AnomalyRate> rates;
-    public int choiceNum = 0;
-    public int previousChoiceNum = 0;
+    public int choiceNum = 0;//現在の異変。ゲーム開始時は０
+    public int previousChoiceNum = 0;//ひとつ前の異変。ゲーム開始時は０
 
-    public int GetChoiceNum()
+    public int GetChoiceNum()//現在の異変を返す
     {
         return previousChoiceNum;
+    }
+
+    public void Start()//初期化
+    {
+        choiceNum = 0;
+        previousChoiceNum = 0;
     }
 
     public AnomalyData Select(int floor)
@@ -19,24 +25,21 @@ public class AnomalySelector : MonoBehaviour
         Debug.Log(previousChoiceNum);
         AnomalyType selectedType;
 
-        // 0階
+        // 0階のときは必ずNoAnomalyを選ぶ
         if (floor < 1)
         {
             selectedType = AnomalyType.NoAnomaly;
-            previousChoiceNum = choiceNum;
-            choiceNum = 0;
-            return anomalies[choiceNum];
         }
-        else
+        else//0階以外のときはランダムに選ぶ
         {
             selectedType = GetRandomType(floor);
         }
 
         List<int> candidates = new List<int>();//選ばれたTypeだけのリストを作成(元のリストのindexを保存)
 
-        for (int i = 1; i < anomalies.Count; i++)//異変の数だけ繰り返す
+        for (int i = 0; i < anomalies.Count; i++)//異変の数だけ繰り返す
         {
-            // Typeと一致しないiがあったらスキップ
+            // Typeと一致しないものはスキップ
             if (anomalies[i].type != selectedType)
                 continue;
 
@@ -47,11 +50,11 @@ public class AnomalySelector : MonoBehaviour
             candidates.Add(i);//Typeと一致するものがあったらCandidatesリストに追加。
         }
 
-        int rand = Random.Range(0, candidates.Count);
+        int rand = Random.Range(0, candidates.Count);//Candidatesリストからランダムに選ぶ
 
-        previousChoiceNum = choiceNum;
-        choiceNum = candidates[rand];
-        return anomalies[choiceNum];
+        previousChoiceNum = choiceNum;//前回の異変を保存
+        choiceNum = candidates[rand];//今回の異変を保存
+        return anomalies[choiceNum];//選ばれた異変を返す
 
     }
 
@@ -72,16 +75,6 @@ public class AnomalySelector : MonoBehaviour
                 result = AnomalyType.NormalAnomaly;
             else
                 result = AnomalyType.TinyAnomaly;
-
-            // 前回も今回もNoAnomalyなら引き直し
-            if (
-                result == AnomalyType.NoAnomaly &&
-                anomalies[choiceNum].type == AnomalyType.NoAnomaly &&
-                previousChoiceNum != 0
-            )
-            {
-                continue;
-            }
 
             return result;
         }

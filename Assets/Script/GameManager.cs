@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     public float clearTime { get; private set; } // ƒNƒŠƒAŠÔ
     public GameState State { get; private set; } 
 
-    public int CurrentFloor;
     private GameState currentGameState;// Œ»İ‚Ìó‘Ô
 
     private void OnEnable()

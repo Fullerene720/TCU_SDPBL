@@ -94,7 +94,7 @@ public class StageManager : MonoBehaviour
 
     }
 
-    public void HallChange()
+    public void HallChange()//˜L‰º¶¬ƒtƒ‰ƒO
     {
         Debug.Log("HallChange");
         HallWayChange();

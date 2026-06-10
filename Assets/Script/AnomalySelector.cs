@@ -21,8 +21,6 @@ public class AnomalySelector : MonoBehaviour
 
     public AnomalyData Select(int floor)
     {
-
-        Debug.Log(previousChoiceNum);
         AnomalyType selectedType;
 
         // 0階のときは必ずNoAnomalyを選ぶ
@@ -35,9 +33,11 @@ public class AnomalySelector : MonoBehaviour
             selectedType = GetRandomType(floor);
         }
 
-        List<int> candidates = new List<int>();//選ばれたTypeだけのリストを作成(元のリストのindexを保存)
+        //選ばれたTypeだけのリストを作成(元のリストのindexを保存)
+        List<int> candidates = new List<int>();
 
-        for (int i = 0; i < anomalies.Count; i++)//異変の数だけ繰り返す
+        //異変の数だけ繰り返す
+        for (int i = 0; i < anomalies.Count; i++)
         {
             // Typeと一致しないものはスキップ
             if (anomalies[i].type != selectedType)
@@ -47,10 +47,12 @@ public class AnomalySelector : MonoBehaviour
             if (i == choiceNum)
                 continue;
 
-            candidates.Add(i);//Typeと一致するものがあったらCandidatesリストに追加。
+            //Typeと一致するものがあったらCandidatesリストに追加。
+            candidates.Add(i);
         }
 
-        int rand = Random.Range(0, candidates.Count);//Candidatesリストからランダムに選ぶ
+        //Candidatesリストからランダムに選ぶ
+        int rand = Random.Range(0, candidates.Count);
 
         previousChoiceNum = choiceNum;//前回の異変を保存
         choiceNum = candidates[rand];//今回の異変を保存

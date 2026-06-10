@@ -18,37 +18,30 @@ public class AnomalyManager : MonoBehaviour
         shift = 1;
     }
 
-
-    public void GenerateAnomaly(Vector3 position,int classCount)//生成異変選択
+    public void GenerateAnomaly(Vector3 position,int classCount)//生成教室選択
     {
         AnomalyData selected = selector.Select(classCount);
         Spawn(selected,position);
         ChangeFloorNum(selected,classCount);
     }
-
     
-    public void DelateAnomaly()//削除異変選択
+    public void DelateAnomaly()//削除教室選択
     {
         AnomalyData delated = selector.Delate();
         delate(delated);
     }
 
-
-    void Spawn(AnomalyData data, Vector3 position)
+    void Spawn(AnomalyData data, Vector3 position)//教室生成
     {
         data.gameObject.SetActive(true);
 
         position *= shift;
 
-        // Position
         Vector3 newPos = currentPosition + position;
 
 
-        // Rotation
-        Quaternion newRot =
-            currentRotation * Quaternion.Euler(0, 180, 0);
+        Quaternion newRot = currentRotation * Quaternion.Euler(0, 180, 0);
 
-        // 一括設定
         data.transform.SetPositionAndRotation(newPos, newRot);
 
         // 現在値更新
@@ -61,7 +54,7 @@ public class AnomalyManager : MonoBehaviour
     }
 
 
-    void delate(AnomalyData data)//異変削除
+    void delate(AnomalyData data)//教室削除
     {
         data.gameObject.SetActive(false);
     }
@@ -97,18 +90,5 @@ public class AnomalyManager : MonoBehaviour
                 data.ChangeFloorString("Error");
                 break;
         }
-
     }
-
-
-    private void Update()
-    {
-        
-
-
-    }
-
-
-    
-
 }
